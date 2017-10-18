@@ -53,7 +53,7 @@ $(document).ready(function () {
     });
 
     promise.then(function (response) {
-      body = JSON.parse(response);
+      var body = JSON.parse(response);
       $('.chatLog').text('' + body.output);
     }, function (error) {
       $('.showErrors').text('There was an error processing your request: ' + error.message);
