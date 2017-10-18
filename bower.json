@@ -16,6 +16,7 @@
     "bootstrap": "^3.3.7"
   },
   "authors": [
-    "Rafael Furry <rfurry@gmail.com>"
+    "Dan Nollette <nollette.dan@gmail.com>",
+    "L.Devin MacKrell <ldmackrell@gmail.com>"
   ]
 }
