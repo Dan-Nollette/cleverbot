@@ -1,6 +1,7 @@
 import { Chat } from './../js/chat.js';
 let conversation_id;
 let cs;
+let promise;
 
 $(document).ready(function () {
   $('.btn').click(function (e) {
@@ -8,20 +9,20 @@ $(document).ready(function () {
     let chatIn = $('#chatIn').val();
     $('#chatIn').val("");
 
-    let promise = new Promise(function(resolve, reject) {
-      let request = new XMLHttpRequest();
-      let url = `https://www.cleverbot.com/getreply?key=CC508YHAcq5uMTjbsOZ2cOpwr5g&input=${chatIn}&conversation_id=${conversation_id}&cs=${cs}`;
-      request.onload = function() {
-        if(this.status === 200) {
-          resolve(request.response);
-        } else {
-          reject(Error(request.statusText));
-        }
-      }
-      request.open("GET", url, true);
-      request.send();
-    });
-
+    // let promise = new Promise(function(resolve, reject) {
+    //   let request = new XMLHttpRequest();
+    //   let url = `https://www.cleverbot.com/getreply?key=CC508YHAcq5uMTjbsOZ2cOpwr5g&input=${chatIn}&conversation_id=${conversation_id}&cs=${cs}`;
+    //   request.onload = function() {
+    //     if(this.status === 200) {
+    //       resolve(request.response);
+    //     } else {
+    //       reject(Error(request.statusText));
+    //     }
+    //   }
+    //   request.open("GET", url, true);
+    //   request.send();
+    // });
+    //
     promise.then(function(response) {
       let body = JSON.parse(response);
       $('.chatLog').text(`${body.output}`);
@@ -33,6 +34,8 @@ $(document).ready(function () {
     }, function(error) {
       $('.showErrors').text(`There was an error processing your request: ${error.message}`);
     });
+    let chatParams = chat.apiPromise();
+
 
     let chatOutput =
     $('#chatLog').text(chatOutput);
