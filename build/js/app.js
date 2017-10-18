@@ -9,38 +9,62 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var Obj = exports.Obj = function () {
-  function Obj(number) {
-    _classCallCheck(this, Obj);
+var Chat = exports.Chat = function () {
+  function Chat(number) {
+    _classCallCheck(this, Chat);
 
     number = parseInt(number);
     this.number = number;
   }
 
-  _createClass(Obj, [{
+  _createClass(Chat, [{
     key: "func",
     value: function func() {
       return this.number += 1;
     }
   }]);
 
-  return Obj;
+  return Chat;
 }();
 
 },{}],2:[function(require,module,exports){
 'use strict';
 
-var _object = require('./../js/object.js');
+var _chat = require('./../js/chat.js');
 
 $(document).ready(function () {
   $('.btn').click(function (e) {
     e.preventDefault();
-    var numberIn = $('#numberIn').val();
-    var obj = new _object.Obj(numberIn);
-    var numberOut = obj.func();
-    console.log(numberIn, numberOut);
-    $('#numberOut').text(numberOut);
+    var chatIn = $('#chatIn').val();
+    $('#chatIn').val("");
+
+    var promise = new Promise(function (resolve, reject) {
+      var request = new XMLHttpRequest();
+      var url = 'https://www.cleverbot.com/getreply?key=CC508YHAcq5uMTjbsOZ2cOpwr5g';
+      request.onload = function () {
+        if (this.status === 200) {
+          resolve(request.response);
+        } else {
+          reject(Error(request.statusText));
+        }
+      };
+      request.open("GET", url, true);
+      request.send();
+    });
+
+    promise.then(function (response) {
+      body = JSON.parse(response);
+      $('.chatLog').text('' + body.output);
+    }, function (error) {
+      $('.showErrors').text('There was an error processing your request: ' + error.message);
+    });
+
+    var chatOutput = $('#chatLog').text(chatOutput);
+    // let obj = new Obj(numberIn);
+    // let numberOut = obj.func();
+    // console.log(numberIn, numberOut);
+    // $('#numberOut').text(numberOut);
   });
 });
 
-},{"./../js/object.js":1}]},{},[2]);
+},{"./../js/chat.js":1}]},{},[2]);
